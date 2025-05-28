@@ -54,7 +54,7 @@ namespace StudentRegistration.Infrastructure.Data
             // Relación Professor a StudentSubject
             modelBuilder.Entity<StudentSubject>()
                 .HasOne(ss => ss.Professor)
-                .WithMany(p => p.StudentSubjects) // Añadido para completar la relación en el modelo
+                .WithMany(p => p.StudentSubjects) 
                 .HasForeignKey(ss => ss.ProfessorId);
 
             // Configurar la restricción única (UQ_StudentSubject)
