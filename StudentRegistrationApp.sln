@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36121.58 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentRegistration.Api", "StudentRegistration.Api\StudentRegistration.Api.csproj", "{6F727F2E-B6B0-4217-84CF-E8A16AB6DD25}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseScripts", "DatabaseScripts", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		DatabaseScripts\create_database.sql = DatabaseScripts\create_database.sql
+		DatabaseScripts\seed_data.sql = DatabaseScripts\seed_data.sql
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6F727F2E-B6B0-4217-84CF-E8A16AB6DD25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F727F2E-B6B0-4217-84CF-E8A16AB6DD25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F727F2E-B6B0-4217-84CF-E8A16AB6DD25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F727F2E-B6B0-4217-84CF-E8A16AB6DD25}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B49856A2-EAC3-4C46-A876-46BA8E267698}
+	EndGlobalSection
+EndGlobal
