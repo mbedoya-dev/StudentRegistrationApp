@@ -1,6 +1,6 @@
 ﻿using StudentRegistration.Domain.Entities;
 
-namespace Application.Interfaces
+namespace StudentRegistration.Application.Interfaces
 {
     public interface ISubjectRepository
     {

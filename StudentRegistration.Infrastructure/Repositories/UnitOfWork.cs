@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using StudentRegistration.Application.Interfaces;
 using StudentRegistration.Infrastructure.Data;
 
 namespace StudentRegistration.Infrastructure.Repositories
@@ -9,6 +9,7 @@ namespace StudentRegistration.Infrastructure.Repositories
         private IStudentRepository? _students;
         private ISubjectRepository? _subjects;
         private IProfessorRepository? _professors;
+        private IStudentSubjectRepository? _studentSubjects;
 
         public UnitOfWork(StudentRegistrationDbContext context)
         {
@@ -18,6 +19,7 @@ namespace StudentRegistration.Infrastructure.Repositories
         public IStudentRepository Students => _students ??= new StudentRepository(_context);
         public ISubjectRepository Subjects => _subjects ??= new SubjectRepository(_context);
         public IProfessorRepository Professors => _professors ??= new ProfessorRepository(_context);
+        public IStudentSubjectRepository StudentSubjects => _studentSubjects ??= new StudentSubjectRepository(_context); 
 
         public async Task<int> CompleteAsync()
         {

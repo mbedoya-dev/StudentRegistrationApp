@@ -1,5 +1,5 @@
-﻿using Application.Interfaces;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentRegistration.Application.Interfaces;
 using StudentRegistration.Domain.Entities;
 using StudentRegistration.Infrastructure.Data;
 
