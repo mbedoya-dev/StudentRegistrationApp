@@ -13,6 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseScripts", "Database
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentRegistration.Domain", "StudentRegistration.Domain\StudentRegistration.Domain.csproj", "{2AE6B152-9928-4AA2-9E4E-A2C6F2F9C78D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentRegistration.Infrastructure", "StudentRegistration.Infrastructure\StudentRegistration.Infrastructure.csproj", "{8B71D98F-DC2E-4D2A-AC45-2A726E48E9FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{1C77E5E5-97BC-4355-8538-ABCAC5200124}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{2AE6B152-9928-4AA2-9E4E-A2C6F2F9C78D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AE6B152-9928-4AA2-9E4E-A2C6F2F9C78D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AE6B152-9928-4AA2-9E4E-A2C6F2F9C78D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B71D98F-DC2E-4D2A-AC45-2A726E48E9FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B71D98F-DC2E-4D2A-AC45-2A726E48E9FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B71D98F-DC2E-4D2A-AC45-2A726E48E9FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B71D98F-DC2E-4D2A-AC45-2A726E48E9FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C77E5E5-97BC-4355-8538-ABCAC5200124}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C77E5E5-97BC-4355-8538-ABCAC5200124}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C77E5E5-97BC-4355-8538-ABCAC5200124}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C77E5E5-97BC-4355-8538-ABCAC5200124}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
