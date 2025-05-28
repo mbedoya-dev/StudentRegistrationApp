@@ -81,7 +81,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Student Registration API V1");
-        c.RoutePrefix = string.Empty; // Para servir Swagger UI en la raíz de la aplicación
+        c.RoutePrefix = "swagger"; // Para servir Swagger UI en la raíz de la aplicación
     });
 }
 
