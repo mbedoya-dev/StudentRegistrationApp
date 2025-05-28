@@ -21,59 +21,91 @@ namespace StudentRegistration.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Mapeo para la entidad Student
+            modelBuilder.Entity<Student>(entity =>
+            {
+                entity.Property(e => e.StudentId).HasColumnName("student_id");
+                entity.Property(e => e.FirstName).HasColumnName("first_name");
+                entity.Property(e => e.LastName).HasColumnName("last_name");
+                entity.Property(e => e.Email).HasColumnName("email");
+                entity.Property(e => e.RegistrationDate).HasColumnName("registration_date");
+                entity.Property(e => e.LastUpdated).HasColumnName("last_updated");
+
+                // Configuración para las propiedades de fecha que ya tenías
+                entity.Property(s => s.RegistrationDate)
+                      .HasDefaultValueSql("GETDATE()");
+                entity.Property(s => s.LastUpdated)
+                      .HasDefaultValueSql("GETDATE()");
+            });
+
+            // Mapeo para la entidad Subject
+            modelBuilder.Entity<Subject>(entity =>
+            {
+                entity.Property(e => e.SubjectId).HasColumnName("subject_id");
+                entity.Property(e => e.SubjectName).HasColumnName("subject_name");
+                entity.Property(e => e.Credits).HasColumnName("credits");
+            });
+
+            // Mapeo para la entidad Professor
+            modelBuilder.Entity<Professor>(entity =>
+            {
+                entity.Property(e => e.ProfessorId).HasColumnName("professor_id");
+                entity.Property(e => e.FirstName).HasColumnName("first_name");
+                entity.Property(e => e.LastName).HasColumnName("last_name");
+                entity.Property(e => e.Email).HasColumnName("email");
+            });
+
             // Configuración para la tabla ProfessorSubject (relación muchos a muchos)
-            modelBuilder.Entity<ProfessorSubject>()
-                .HasKey(ps => new { ps.ProfessorId, ps.SubjectId });
+            modelBuilder.Entity<ProfessorSubject>(entity => // Añadido alias 'entity' para consistencia
+            {
+                entity.HasKey(ps => new { ps.ProfessorId, ps.SubjectId });
+                entity.Property(ps => ps.ProfessorId).HasColumnName("professor_id"); 
+                entity.Property(ps => ps.SubjectId).HasColumnName("subject_id");
 
-            modelBuilder.Entity<ProfessorSubject>()
-                .HasOne(ps => ps.Professor)
-                .WithMany(p => p.ProfessorSubjects)
-                .HasForeignKey(ps => ps.ProfessorId);
+                entity.HasOne(ps => ps.Professor)
+                      .WithMany(p => p.ProfessorSubjects)
+                      .HasForeignKey(ps => ps.ProfessorId);
 
-            modelBuilder.Entity<ProfessorSubject>()
-                .HasOne(ps => ps.Subject)
-                .WithMany(s => s.ProfessorSubjects)
-                .HasForeignKey(ps => ps.SubjectId);
+                entity.HasOne(ps => ps.Subject)
+                      .WithMany(s => s.ProfessorSubjects)
+                      .HasForeignKey(ps => ps.SubjectId);
+            });
+
 
             // Configuración para la tabla StudentSubject
-            modelBuilder.Entity<StudentSubject>()
-                .HasKey(ss => ss.StudentSubjectId); // Clave primaria definida en la entidad
+            modelBuilder.Entity<StudentSubject>(entity => 
+            {
+                entity.HasKey(ss => ss.StudentSubjectId); // Clave primaria definida en la entidad
+                entity.Property(ss => ss.StudentSubjectId).HasColumnName("student_subject_id");
+                entity.Property(ss => ss.StudentId).HasColumnName("student_id");
+                entity.Property(ss => ss.SubjectId).HasColumnName("subject_id");
+                entity.Property(ss => ss.ProfessorId).HasColumnName("professor_id");
+                entity.Property(ss => ss.EnrollmentDate).HasColumnName("enrollment_date");
 
-            // Relación Student a StudentSubject
-            modelBuilder.Entity<StudentSubject>()
-                .HasOne(ss => ss.Student)
-                .WithMany(s => s.StudentSubjects)
-                .HasForeignKey(ss => ss.StudentId);
 
-            // Relación Subject a StudentSubject
-            modelBuilder.Entity<StudentSubject>()
-                .HasOne(ss => ss.Subject)
-                .WithMany(s => s.StudentSubjects)
-                .HasForeignKey(ss => ss.SubjectId);
+                // Relación Student a StudentSubject
+                entity.HasOne(ss => ss.Student)
+                      .WithMany(s => s.StudentSubjects)
+                      .HasForeignKey(ss => ss.StudentId);
 
-            // Relación Professor a StudentSubject
-            modelBuilder.Entity<StudentSubject>()
-                .HasOne(ss => ss.Professor)
-                .WithMany(p => p.StudentSubjects) 
-                .HasForeignKey(ss => ss.ProfessorId);
+                // Relación Subject a StudentSubject
+                entity.HasOne(ss => ss.Subject)
+                      .WithMany(s => s.StudentSubjects)
+                      .HasForeignKey(ss => ss.SubjectId);
 
-            // Configurar la restricción única (UQ_StudentSubject)
-            modelBuilder.Entity<StudentSubject>()
-                .HasIndex(ss => new { ss.StudentId, ss.SubjectId })
-                .IsUnique();
+                // Relación Professor a StudentSubject
+                entity.HasOne(ss => ss.Professor)
+                      .WithMany(p => p.StudentSubjects)
+                      .HasForeignKey(ss => ss.ProfessorId);
 
-            // Configuración para las propiedades de fecha
-            modelBuilder.Entity<Student>()
-                .Property(s => s.RegistrationDate)
-                .HasDefaultValueSql("GETDATE()");
+                // Configurar la restricción única (UQ_StudentSubject)
+                entity.HasIndex(ss => new { ss.StudentId, ss.SubjectId })
+                      .IsUnique();
 
-            modelBuilder.Entity<Student>()
-                .Property(s => s.LastUpdated)
-                .HasDefaultValueSql("GETDATE()");
-
-            modelBuilder.Entity<StudentSubject>()
-                .Property(ss => ss.EnrollmentDate)
-                .HasDefaultValueSql("GETDATE()");           
+                // Configuración para las propiedades de fecha que ya tenías
+                entity.Property(ss => ss.EnrollmentDate)
+                      .HasDefaultValueSql("GETDATE()");
+            });
         }
     }
 }
