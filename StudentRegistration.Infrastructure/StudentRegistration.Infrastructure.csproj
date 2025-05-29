@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Application\StudentRegistration.Application.csproj" />
+    <ProjectReference Include="..\StudentRegistration.Application\StudentRegistration.Application.csproj" />
     <ProjectReference Include="..\StudentRegistration.Domain\StudentRegistration.Domain.csproj" />
   </ItemGroup>
 

@@ -1,41 +1,68 @@
-  <div class="row">
-  <div class="col-md-6">
-    <mat-card class="cardWithShadow">
-      <mat-card-content>
-        <mat-card-title>Toastr Success</mat-card-title>
-        <mat-card-subtitle class="m-b-12">This is the simple toastr with success message</mat-card-subtitle>
-        <button (click)="showSuccess()" mat-flat-button class=" bg-success text-white">Toastr Success</button>
-      </mat-card-content>
-    </mat-card>
-  </div>
-  <div class="col-md-6">
-    <mat-card class="cardWithShadow">
-      <mat-card-content>
-        <mat-card-title>Toastr Danger</mat-card-title>
-        <mat-card-subtitle class="m-b-12">This is the simple toastr with Danger message</mat-card-subtitle>
-        <button (click)="showError()" mat-flat-button class="bg-error text-white">Toastr Danger</button>
-      </mat-card-content>
-    </mat-card>
-  </div>
-  <div class="col-md-6">
-    <mat-card class="cardWithShadow">
-      <mat-card-content>
-        <mat-card-title>Toastr Warning</mat-card-title>
-        <mat-card-subtitle class="m-b-12">This is the simple toastr with Warning message</mat-card-subtitle>
-        <button (click)="showWarning()" mat-flat-button class="bg-warning text-white">Toastr Warning</button>
-      </mat-card-content>
-    </mat-card>
-  </div>
-  <div class="col-md-6">
-    <mat-card class="cardWithShadow">
-      <mat-card-content>
-        <mat-card-title>Toastr Accent</mat-card-title>
-        <mat-card-subtitle class="m-b-12">This is the simple toastr with Accent message</mat-card-subtitle>
-        <button (click)="showInfo()" mat-flat-button class="bg-secondary text-white">Toastr Accent</button>
-      </mat-card-content>
-    </mat-card>
-  </div>
-</div>
-  
-  
-  
+
+  <mat-card class="cardWithShadow">
+  <mat-card-content>
+    <div class="d-sm-flex align-items-center justify-content-between">
+      <div>
+        <mat-card-title>Registro de Nuevo Estudiante</mat-card-title>
+        <mat-card-subtitle>Por favor ingrese su información para registrarse</mat-card-subtitle>
+      </div>
+    </div>
+    
+    <form [formGroup]="studentRegistrationForm" (ngSubmit)="onSubmit()">
+      <mat-label class="f-s-14 f-w-600 m-b-8 d-block">Nombre</mat-label>
+      <mat-form-field appearance="outline" class="w-100">
+        <input matInput placeholder="" formControlName="firstName" required />
+        <mat-icon matPrefix>
+          <i-tabler name="user" class="icon-20 d-flex"></i-tabler>
+        </mat-icon>
+        <mat-error *ngIf="studentRegistrationForm.get('firstName')?.hasError('required') && studentRegistrationForm.get('firstName')?.touched">
+          El nombre es requerido.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-label class="f-s-14 f-w-600 m-b-8 d-block">Apellido</mat-label>
+      <mat-form-field appearance="outline" class="w-100">
+        <input matInput placeholder="" formControlName="lastName" required />
+        <mat-icon matPrefix>
+          <i-tabler name="user" class="icon-20 d-flex"></i-tabler>
+        </mat-icon>
+        <mat-error *ngIf="studentRegistrationForm.get('lastName')?.hasError('required') && studentRegistrationForm.get('lastName')?.touched">
+          El apellido es requerido.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-label class="f-s-14 f-w-600 m-b-8 d-block">Email</mat-label>
+      <mat-form-field appearance="outline" class="w-100">
+        <input matInput placeholder="" formControlName="email" required type="email" />
+        <mat-icon matPrefix>
+          <i-tabler name="mail" class="icon-20 d-flex"></i-tabler>
+        </mat-icon>
+        <mat-error *ngIf="studentRegistrationForm.get('email')?.hasError('required') && studentRegistrationForm.get('email')?.touched">
+          El email es requerido.
+        </mat-error>
+        <mat-error *ngIf="studentRegistrationForm.get('email')?.hasError('email') && studentRegistrationForm.get('email')?.touched">
+          El formato del email no es válido.
+        </mat-error>
+      </mat-form-field>
+
+      <div class="messages m-t-16 m-b-16">
+        <mat-progress-bar mode="indeterminate" *ngIf="isLoading" style="margin-bottom: 10px;"></mat-progress-bar>
+
+        <div *ngIf="successMessage" class="alert alert-success" style="padding: 10px; margin-bottom: 10px; border: 1px solid green; border-radius: 4px; color: green; background-color: #e6ffed;">
+          {{ successMessage }}
+        </div>
+
+        <div *ngIf="errorMessage" class="alert alert-danger" style="padding: 10px; margin-bottom: 10px; border: 1px solid red; border-radius: 4px; color: red; background-color: #ffe6e6;">
+          {{ errorMessage }}
+        </div>
+      </div>
+
+      <div class="d-flex align-items-center gap-8 m-t-10 b-t-1 p-t-20">
+        <button mat-flat-button color="primary" type="submit" [disabled]="isLoading">
+          {{ isLoading ? 'Registrando...' : 'Registrar Estudiante' }}
+        </button>
+        </div>
+    </form>
+
+  </mat-card-content>
+</mat-card>    

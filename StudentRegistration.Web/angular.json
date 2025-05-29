@@ -28,7 +28,10 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               "src/styles.scss",
-              "src/assets/scss/style.scss"
+              "src/assets/scss/style.scss",
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/angular-calendar/css/angular-calendar.css",
+              "node_modules/highlight.js/styles/atom-one-dark.min.css"
             ],
             "scripts": [],
             "browser": "src/main.ts"

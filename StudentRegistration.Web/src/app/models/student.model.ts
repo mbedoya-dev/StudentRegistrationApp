@@ -6,5 +6,5 @@ export interface CreateStudent {
 }
 
 export interface Student extends CreateStudent {
-  id: number;
+  studentId: number;
 }

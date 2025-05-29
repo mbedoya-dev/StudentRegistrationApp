@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { BlankComponent } from './layouts/blank/blank.component';
 import { FullComponent } from './layouts/full/full.component';
 import { AppErrorComponent } from './pages/error/error.component';
 
@@ -10,7 +9,7 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: '/starter',
+        redirectTo: '/dashboards/dashboard1',
         pathMatch: 'full',
       },
       {
@@ -19,25 +18,18 @@ export const routes: Routes = [
           import('./pages/pages.routes').then((m) => m.PagesRoutes),
       },
       {
-        path: 'sample-page',
+        path: 'apps',
         loadChildren: () =>
-          import('./pages/pages.routes').then((m) => m.PagesRoutes),
+          import('./pages/apps/apps.routes').then((m) => m.AppsRoutes),
       },
     ],
   },
   {
-    path: '',
-    component: BlankComponent,
-    children: [
-      {
-        path: 'error',
-        component: AppErrorComponent,
-      },
-    ],
+    path: 'error',
+    component: AppErrorComponent,
   },
   {
     path: '**',
     redirectTo: '/error',
   },
 ];
- 

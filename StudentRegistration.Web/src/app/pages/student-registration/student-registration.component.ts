@@ -25,7 +25,7 @@ import { ToastrService, ToastrModule } from 'ngx-toastr';
     MatFormFieldModule, 
     MatInputModule,
     MatButtonModule,
-    MatProgressBarModule,
+    MatProgressBarModule, 
     MatCardModule,
     TablerIconsModule,
     ToastrModule,
@@ -55,9 +55,6 @@ export class StudentRegistrationComponent implements OnInit {
   }
 
   onSubmit(): void {
-
-    this.toastr.success(`¡Prueba! `, 'Success!');
-
     if (this.studentRegistrationForm.invalid) {
       this.studentRegistrationForm.markAllAsTouched(); // Muestra errores si el formulario no es válido
       return;
@@ -71,11 +68,8 @@ export class StudentRegistrationComponent implements OnInit {
       .subscribe({
         next: (newlyRegisteredStudent: Student) => {
           this.isLoading = false;
-          this.toastr.success(`¡Estudiante registrado con éxito! ID: ${newlyRegisteredStudent.id}`, 'Success!');
+          this.toastr.success(`¡Estudiante registrado con éxito! ID: ${newlyRegisteredStudent.studentId}`, 'Success!');
           this.studentRegistrationForm.reset(); // Limpia el formulario
-          // Opcionalmente, redirige al usuario o haz otra acción
-          // Ejemplo: this.router.navigate(['/ruta-siguiente', newlyRegisteredStudent.id]);
-          // Para este ejemplo, solo mostramos un mensaje.
         },
         error: (err) => {
           this.isLoading = false;
@@ -88,23 +82,5 @@ export class StudentRegistrationComponent implements OnInit {
           }
         }
       });
-  }
-
-
-  showSuccess() {
-    this.toastr.success('You are awesome!', 'Success!');
-  }
-
-  showError() {
-    this.toastr.error('This is not good!', 'Oops!');
-  }
-
-  showWarning() {
-    this.toastr.warning('You are being warned.', 'Alert!');
-  }
-
-  showInfo() {
-    this.toastr.info('Just some information for you.');
-  }
-  
+  }  
 }
