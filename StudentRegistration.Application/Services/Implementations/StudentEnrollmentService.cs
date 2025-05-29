@@ -35,6 +35,31 @@ namespace StudentRegistration.Application.Services.Implementations
             }
         }
 
+        public async Task<IEnumerable<SubjectDetailDto>> GetAllSubjectsWithAvailableProfessorsAsync()
+        {
+            try
+            {
+                var subjectsWithNav = await _unitOfWork.Subjects.GetAllWithProfessorAssignmentsAsync();
+
+                var result = subjectsWithNav.Select(subject => new SubjectDetailDto
+                {
+                    SubjectId = subject.SubjectId,
+                    SubjectName = subject.SubjectName,
+                    Credits = subject.Credits,
+                    AvailableProfessors = subject.ProfessorSubjects
+                                            .Select(ps => _mapper.Map<ProfessorDto>(ps.Professor)) // Mapea cada Professor a ProfessorDto
+                                            .ToList()
+                }).ToList();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener materias con profesores asignados.");
+                return new List<SubjectDetailDto>();
+            }           
+        }
+
         public async Task<IEnumerable<ProfessorDto>> GetAllProfessorsAsync()
         {
             try
@@ -114,9 +139,9 @@ namespace StudentRegistration.Application.Services.Implementations
                         throw new InvalidOperationException($"El estudiante no puede tener clases con el mismo profesor (ID: {enrollmentDetail.ProfessorId}) en diferentes materias.");
                     }
 
-                    var professorTeachesSubject = await _unitOfWork.Professors.GetByIdAsync(enrollmentDetail.ProfessorId);
-                    
-                    if (professorTeachesSubject != null && !professorTeachesSubject.ProfessorSubjects.Any(ps => ps.SubjectId == enrollmentDetail.SubjectId))
+                    //Valiar que el profesor dicta la materia
+                    var professorEntity = await _unitOfWork.Professors.GetByIdWithSubjectsAsync(enrollmentDetail.ProfessorId);
+                    if (professorEntity != null && !professorEntity.ProfessorSubjects.Any(ps => ps.SubjectId == enrollmentDetail.SubjectId))
                     {
                         _logger.LogWarning("El profesor {ProfessorId} no dicta la materia {SubjectId}.", enrollmentDetail.ProfessorId, enrollmentDetail.SubjectId);
                         throw new InvalidOperationException($"El profesor seleccionado (ID: {enrollmentDetail.ProfessorId}) no dicta la materia (ID: {enrollmentDetail.SubjectId}).");

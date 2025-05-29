@@ -28,5 +28,12 @@ namespace StudentRegistration.Infrastructure.Repositories
         {
             return await _context.Professors.FirstOrDefaultAsync(p => p.Email == email);
         }
+
+        public async Task<Professor?> GetByIdWithSubjectsAsync(int professorId)
+        {
+            return await _context.Professors
+                                 .Include(p => p.ProfessorSubjects)
+                                 .FirstOrDefaultAsync(p => p.ProfessorId == professorId);
+        }
     }
 }

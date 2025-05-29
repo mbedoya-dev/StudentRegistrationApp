@@ -1,5 +1,6 @@
-// Basado en ProfessorDto.cs
-export interface Professor {
-  id: number;
-  name: string;
+export interface Professor { // Corresponde a ProfessorDto.cs
+  professorId: number;
+  firstName: string;
+  lastName: string;
+  email: string;
 }

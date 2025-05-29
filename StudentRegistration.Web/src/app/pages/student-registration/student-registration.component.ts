@@ -15,6 +15,8 @@ import { TablerIconsModule } from 'angular-tabler-icons';
 import { MatCardModule } from '@angular/material/card';
 
 import { ToastrService, ToastrModule } from 'ngx-toastr';
+import { StudentSessionService } from 'src/app/services/student-session.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-student-registration-form',
@@ -42,10 +44,15 @@ export class StudentRegistrationComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private studentService: StudentService,
-    private toastr: ToastrService
+    private studentSessionService: StudentSessionService, 
+    private toastr: ToastrService,
+    private router: Router 
   ) {}
 
   ngOnInit(): void {
+    // Al cargar el formulario de cero, borra la sesión del estudiante anterior.
+    this.studentSessionService.clearCurrentStudent(); 
+
     this.studentRegistrationForm = this.fb.group({
       // Basado en CreateStudentDto.cs que espera FirstName, LastName, Email
       firstName: ['', Validators.required],
@@ -69,7 +76,13 @@ export class StudentRegistrationComponent implements OnInit {
         next: (newlyRegisteredStudent: Student) => {
           this.isLoading = false;
           this.toastr.success(`¡Estudiante registrado con éxito! ID: ${newlyRegisteredStudent.studentId}`, 'Success!');
+
+          // Guarda el estudiante recién registrado en la sesión
+          this.studentSessionService.setCurrentStudent(newlyRegisteredStudent);
+
           this.studentRegistrationForm.reset(); // Limpia el formulario
+
+          this.router.navigate(['/subject-enrollment']);
         },
         error: (err) => {
           this.isLoading = false;

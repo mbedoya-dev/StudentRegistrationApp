@@ -9,18 +9,8 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: '/dashboards/dashboard1',
-        pathMatch: 'full',
-      },
-      {
-        path: 'starter',
         loadChildren: () =>
           import('./pages/pages.routes').then((m) => m.PagesRoutes),
-      },
-      {
-        path: 'apps',
-        loadChildren: () =>
-          import('./pages/apps/apps.routes').then((m) => m.AppsRoutes),
       },
     ],
   },

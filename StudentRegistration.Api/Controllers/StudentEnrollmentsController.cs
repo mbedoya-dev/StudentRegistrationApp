@@ -39,7 +39,7 @@ namespace StudentRegistration.Api.Controllers
                 var result = await _studentEnrollmentService.EnrollStudentInSubjectsAsync(enrollStudentDto);
                 if (result)
                 {
-                    return Ok("Inscripción realizada exitosamente.");
+                    return Ok(new { message = "Inscripción realizada exitosamente." });
                 }
                 return BadRequest("No se pudo completar la inscripción."); // Esto debería ser manejado por excepciones más específicas
             }

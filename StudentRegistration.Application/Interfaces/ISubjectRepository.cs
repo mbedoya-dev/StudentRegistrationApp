@@ -7,5 +7,6 @@ namespace StudentRegistration.Application.Interfaces
         Task<Subject?> GetByIdAsync(int id);
         Task<IEnumerable<Subject>> GetAllAsync();
         Task<Subject?> GetByNameAsync(string name);
+        Task<IEnumerable<Subject>> GetAllWithProfessorAssignmentsAsync();
     }
 }

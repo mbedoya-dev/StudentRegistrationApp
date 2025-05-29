@@ -28,5 +28,13 @@ namespace StudentRegistration.Infrastructure.Repositories
         {
             return await _context.Subjects.FirstOrDefaultAsync(s => s.SubjectName == name);
         }
+
+        public async Task<IEnumerable<Subject>> GetAllWithProfessorAssignmentsAsync()
+        {
+            return await _context.Subjects
+                .Include(s => s.ProfessorSubjects) // Carga la colección de ProfessorSubject para cada Subject
+                    .ThenInclude(ps => ps.Professor) // Para cada ProfessorSubject, carga la entidad Professor relacionada
+                .ToListAsync();
+        }
     }
 }

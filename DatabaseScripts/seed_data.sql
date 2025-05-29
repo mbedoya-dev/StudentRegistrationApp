@@ -1,32 +1,35 @@
--- Insertar las 10 materias iniciales
+-- Insertar las 5 materias
 INSERT INTO subjects (subject_name) VALUES
 ('Matemáticas I'),
 ('Física I'),
 ('Química I'),
-('Fundamentos de Ciencias de la Computación'),
 ('Fundamentos de Desarrollo Web'),
-('Gestión de Bases de Datos'),
-('Algoritmos y Estructuras de Datos'),
-('Programación Orientada a Objetos'),
-('Ingeniería de Software'),
-('Gestión de Proyectos');
+('Gestión de Bases de Datos');
 GO
 
--- Insertar los 5 profesores iniciales
+-- Insertar los 5 profesores
 INSERT INTO professors (first_name, last_name, email) VALUES
-('Ana', 'García', 'ana.garcia@uni.com'),
-('Juan', 'Rodríguez', 'juan.rodriguez@uni.com'),
-('María', 'Fernández', 'maria.fernandez@uni.com'),
-('Pedro', 'López', 'pedro.lopez@uni.com'),
-('Laura', 'Martínez', 'laura.martinez@uni.com');
+('Ana', 'García', 'ana.garcia@example.com'),           -- ID 1
+('Juan', 'Rodríguez', 'juan.rodriguez@example.com'),   -- ID 2
+('María', 'Fernández', 'maria.fernandez@example.com'), -- ID 3
+('Pedro', 'López', 'pedro.lopez@example.com'),         -- ID 4
+('Laura', 'Martínez', 'laura.martinez@example.com');   -- ID 5
 GO
 
--- Asignar 2 materias a cada profesor
+-- Asignaciones
 INSERT INTO professor_subjects (professor_id, subject_id) VALUES
-(1, 1), (1, 2), -- Ana García dicta Matemáticas I, Física I
-(2, 3), (2, 4), -- Juan Rodríguez dicta Química I, Fundamentos de Ciencias de la Computación
-(3, 5), (3, 6), -- María Fernández dicta Fundamentos de Desarrollo Web, Gestión de Bases de Datos
-(4, 7), (4, 8), -- Pedro López dicta Algoritmos y Estructuras de Datos, Programación Orientada a Objetos
-(5, 9), (5, 10); -- Laura Martínez dicta Ingeniería de Software, Gestión de Proyectos
-GO
+(1, 1), -- Ana - Matemáticas I
+(2, 1), -- Juan - Matemáticas I
 
+(1, 2), -- Ana - Física I
+(3, 2), -- María - Física I
+
+(2, 3), -- Juan - Química I
+(4, 3), -- Pedro - Química I
+
+(3, 4), -- María - Desarrollo Web
+(5, 4), -- Laura - Desarrollo Web
+
+(4, 5), -- Pedro - Bases de Datos
+(5, 5); -- Laura - Bases de Datos
+GO

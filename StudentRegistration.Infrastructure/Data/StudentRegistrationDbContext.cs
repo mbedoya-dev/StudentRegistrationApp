@@ -55,56 +55,63 @@ namespace StudentRegistration.Infrastructure.Data
                 entity.Property(e => e.Email).HasColumnName("email");
             });
 
-            // Configuración para la tabla ProfessorSubject (relación muchos a muchos)
-            modelBuilder.Entity<ProfessorSubject>(entity => // Añadido alias 'entity' para consistencia
+            // Configuración para la entidad de unión ProfessorSubject
+            modelBuilder.Entity<ProfessorSubject>(entity =>
             {
+                // Nombre correcto de la tabla SQL
+                entity.ToTable("professor_subjects");
+
+                // Clave primaria compuesta
                 entity.HasKey(ps => new { ps.ProfessorId, ps.SubjectId });
-                entity.Property(ps => ps.ProfessorId).HasColumnName("professor_id"); 
+
+                // Nombres de columnas
+                entity.Property(ps => ps.ProfessorId).HasColumnName("professor_id");
                 entity.Property(ps => ps.SubjectId).HasColumnName("subject_id");
 
+                // Relación con Professor
                 entity.HasOne(ps => ps.Professor)
-                      .WithMany(p => p.ProfessorSubjects)
-                      .HasForeignKey(ps => ps.ProfessorId);
+                    .WithMany(p => p.ProfessorSubjects) // Propiedad de navegación en Professor
+                    .HasForeignKey(ps => ps.ProfessorId)
+                    .OnDelete(DeleteBehavior.ClientSetNull) // O Restrict / Cascade según diseño
+                    .HasConstraintName("FK_professor_subjects_professors"); 
 
+                // Relación con Subject
                 entity.HasOne(ps => ps.Subject)
-                      .WithMany(s => s.ProfessorSubjects)
-                      .HasForeignKey(ps => ps.SubjectId);
+                    .WithMany(s => s.ProfessorSubjects) // Propiedad de navegación en Subject
+                    .HasForeignKey(ps => ps.SubjectId)
+                    .OnDelete(DeleteBehavior.ClientSetNull) // O Restrict / Cascade
+                    .HasConstraintName("FK_professor_subjects_subjects"); 
             });
 
-
-            // Configuración para la tabla StudentSubject
-            modelBuilder.Entity<StudentSubject>(entity => 
+            // Configuración para la entidad de unión StudentSubject (Inscripciones)
+            modelBuilder.Entity<StudentSubject>(entity =>
             {
-                entity.HasKey(ss => ss.StudentSubjectId); // Clave primaria definida en la entidad
-                entity.Property(ss => ss.StudentSubjectId).HasColumnName("student_subject_id");
+                entity.ToTable("student_subjects");
+                entity.HasKey(ss => ss.StudentSubjectId); // Clave primaria simple
+                entity.Property(ss => ss.StudentSubjectId).HasColumnName("student_subject_id").ValueGeneratedOnAdd();
+
                 entity.Property(ss => ss.StudentId).HasColumnName("student_id");
                 entity.Property(ss => ss.SubjectId).HasColumnName("subject_id");
-                entity.Property(ss => ss.ProfessorId).HasColumnName("professor_id");
-                entity.Property(ss => ss.EnrollmentDate).HasColumnName("enrollment_date");
+                entity.Property(ss => ss.ProfessorId).HasColumnName("professor_id"); // Profesor que dicta esta materia a este estudiante
+                entity.Property(ss => ss.EnrollmentDate).HasColumnType("datetime").HasColumnName("enrollment_date");
 
-
-                // Relación Student a StudentSubject
                 entity.HasOne(ss => ss.Student)
-                      .WithMany(s => s.StudentSubjects)
-                      .HasForeignKey(ss => ss.StudentId);
+                    .WithMany(s => s.StudentSubjects)
+                    .HasForeignKey(ss => ss.StudentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_student_subjects_students");
 
-                // Relación Subject a StudentSubject
                 entity.HasOne(ss => ss.Subject)
-                      .WithMany(s => s.StudentSubjects)
-                      .HasForeignKey(ss => ss.SubjectId);
+                    .WithMany(s => s.StudentSubjects) 
+                    .HasForeignKey(ss => ss.SubjectId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_student_subjects_subjects");
 
-                // Relación Professor a StudentSubject
-                entity.HasOne(ss => ss.Professor)
-                      .WithMany(p => p.StudentSubjects)
-                      .HasForeignKey(ss => ss.ProfessorId);
-
-                // Configurar la restricción única (UQ_StudentSubject)
-                entity.HasIndex(ss => new { ss.StudentId, ss.SubjectId })
-                      .IsUnique();
-
-                // Configuración para las propiedades de fecha que ya tenías
-                entity.Property(ss => ss.EnrollmentDate)
-                      .HasDefaultValueSql("GETDATE()");
+                entity.HasOne(ss => ss.Professor) // Relación con el profesor específico de esta inscripción
+                    .WithMany(p => p.StudentSubjects)
+                    .HasForeignKey(ss => ss.ProfessorId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_student_subjects_professors");
             });
         }
     }

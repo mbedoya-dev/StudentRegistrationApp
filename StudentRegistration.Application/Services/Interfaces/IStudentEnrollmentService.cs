@@ -5,6 +5,7 @@ namespace StudentRegistration.Application.Services.Interfaces
     public interface IStudentEnrollmentService
     {
         Task<IEnumerable<SubjectDto>> GetAllSubjectsAsync();
+        Task<IEnumerable<SubjectDetailDto>> GetAllSubjectsWithAvailableProfessorsAsync();
         Task<IEnumerable<ProfessorDto>> GetAllProfessorsAsync();
         Task<bool> EnrollStudentInSubjectsAsync(EnrollStudentDto enrollStudentDto);
         Task<IEnumerable<StudentEnrollmentDto>> GetStudentEnrollmentsAsync(int studentId);

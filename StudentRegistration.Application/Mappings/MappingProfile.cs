@@ -19,6 +19,9 @@ namespace StudentRegistration.Application.Mappings
             // Mapeos para Subject
             CreateMap<Subject, SubjectDto>().ReverseMap();
 
+            // Mapeos para SubjectDetailDto
+            CreateMap<Subject, SubjectDetailDto>();
+
             // Mapeos para Professor
             CreateMap<Professor, ProfessorDto>().ReverseMap();
 

@@ -1,1 +1,128 @@
-<p>subject-enrollment works!</p>
+<div class="container p-t-20">
+  <mat-card>
+    <mat-card-content>
+
+      <div class="d-flex align-items-center justify-content-between m-b-32">
+        <mat-card-title>Inscripción de Materias</mat-card-title>
+        <div *ngIf="currentStudentEnrollments.length > 0">
+          <button mat-flat-button (click)="showShareClass()">
+          Ver compañeros de clases
+        </button>
+        </div>        
+      </div>
+
+      <div *ngIf="loggedInStudent; else noStudentInSessionTpl" class="m-b-20">
+        <h3>Estudiante en Sesión:</h3>
+        <p>
+          <strong>Nombre:</strong> {{ loggedInStudent.firstName }} {{ loggedInStudent.lastName }}<br>
+          <strong>Email:</strong> {{ loggedInStudent.email }} (ID: {{ loggedInStudent.studentId }})
+        </p>
+      </div>
+      <ng-template #noStudentInSessionTpl>
+        <div *ngIf="initialDataLoaded">
+            <p class="text-warn p-y-10">
+            No hay un estudiante en sesión. Por favor, 
+            <a routerLink="/" class="text-primary">registre un estudiante</a> primero para continuar.
+            </p>
+        </div>
+         <div *ngIf="!initialDataLoaded" class="text-center p-y-10">
+            <mat-progress-spinner diameter="30" mode="indeterminate"></mat-progress-spinner> Cargando sesión del estudiante...
+        </div>
+      </ng-template>
+
+      <div *ngIf="loggedInStudent">
+        <hr />
+        <h4>Materias Actualmente Inscritas ({{ currentStudentEnrollments.length }}/{{MAX_SUBJECTS_PER_STUDENT}})</h4>
+        <div *ngIf="isLoadingEnrollments" class="text-center p-y-10">
+            <mat-progress-spinner diameter="30" mode="indeterminate"></mat-progress-spinner> Cargando inscripciones...
+        </div>
+        <mat-list *ngIf="!isLoadingEnrollments && currentStudentEnrollments.length > 0">
+          <mat-list-item *ngFor="let enrollment of currentStudentEnrollments">
+            <mat-icon matListItemIcon>bookmark_added</mat-icon>
+            <div matListItemTitle>{{ enrollment.subjectName }}</div>
+            <div matListItemLine>Profesor: {{ enrollment.professorFirstName }} {{ enrollment.professorLastName }}</div>
+            <div matListItemLine>Fecha Inscripción: {{ enrollment.enrollmentDate | date:'dd/MM/yyyy' }}</div>
+          </mat-list-item>
+        </mat-list>
+        <p *ngIf="!isLoadingEnrollments && currentStudentEnrollments.length === 0">
+          El estudiante no está inscrito en ninguna materia.
+        </p>
+        <hr />
+
+        <h4 *ngIf="currentStudentEnrollments.length < MAX_SUBJECTS_PER_STUDENT">
+            Seleccionar Nuevas Materias para Inscribir (Máximo {{ MAX_SUBJECTS_PER_STUDENT - currentStudentEnrollments.length }} adicionales)
+        </h4>
+        <p *ngIf="currentStudentEnrollments.length >= MAX_SUBJECTS_PER_STUDENT" class="text-warn">
+            El estudiante ya ha alcanzado el límite máximo de {{ MAX_SUBJECTS_PER_STUDENT }} materias inscritas.
+        </p>
+
+        <div *ngIf="currentStudentEnrollments.length < MAX_SUBJECTS_PER_STUDENT">
+            <div *ngIf="isLoadingSubjects" class="text-center p-y-10">
+                <mat-progress-spinner diameter="30" mode="indeterminate"></mat-progress-spinner> Cargando materias disponibles...
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <p *ngIf="!isLoadingSubjects && allSubjectDetails.length === 0">No hay materias disponibles para inscribir.</p>
+                </div>
+                
+                <div class="col-md-6" *ngFor="let subjectDt of allSubjectDetails">
+                    <mat-card class="m-b-10" 
+                              *ngIf="!isSubjectEnrolled(subjectDt.subjectId)"
+                              [class.disabled-card]="!subjectDt.availableProfessors || subjectDt.availableProfessors.length === 0">
+                        <mat-card-content class="d-flex align-items-center">
+                            <mat-checkbox 
+                                class="m-r-10"
+                                (change)="onSubjectCheckboxChange(subjectDt, $event)"
+                                [checked]="isSubjectSelectedForEnrollment(subjectDt.subjectId)"
+                                [disabled]="isEnrolling || 
+                                            ((currentStudentEnrollments.length + enrollmentSelections.length) >= MAX_SUBJECTS_PER_STUDENT && !isSubjectSelectedForEnrollment(subjectDt.subjectId)) ||
+                                            !subjectDt.availableProfessors || subjectDt.availableProfessors.length === 0">
+                            </mat-checkbox>
+                            <div>
+                                <h5 class="mat-subtitle-1 f-w-600 m-b-0">{{ subjectDt.subjectName }}</h5>
+                                <small class="text-muted">Créditos: {{ subjectDt.credits }}</small><br>
+                                <small class="text-danger" *ngIf="!subjectDt.availableProfessors || subjectDt.availableProfessors.length === 0">
+                                    (No hay profesores disponibles para esta materia)
+                                </small>
+                                <small class="text-info" *ngIf="subjectDt.availableProfessors && subjectDt.availableProfessors.length > 0">
+                                    ({{subjectDt.availableProfessors.length}} profesor(es) disponible(s))
+                                </small>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+            
+            <div *ngIf="enrollmentSelections.length > 0" class="m-t-20">
+                <h5>Asignar Profesor a Materias Seleccionadas:</h5>
+                <div *ngFor="let selItem of enrollmentSelections; let i = index" class="m-b-15 p-15 b-1 rounded">
+                    <h6 class="f-w-600">{{ selItem.subjectDetail.subjectName }}</h6>
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Seleccionar Profesor</mat-label>
+                        <mat-select [(ngModel)]="selItem.selectedProfessorId" name="professorForSubject{{i}}" 
+                                    [disabled]="isEnrolling"
+                                    required>
+                             <mat-option *ngFor="let prof of selItem.subjectDetail.availableProfessors" [value]="prof.professorId">
+                                {{ prof.firstName }} {{ prof.lastName }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="!selItem.selectedProfessorId">Debe seleccionar un profesor.</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="m-t-20" *ngIf="enrollmentSelections.length > 0">
+                <button mat-flat-button color="primary" 
+                        (click)="prepareAndEnrollStudent()" 
+                        [disabled]="isEnrollButtonDisabled()">
+                  <mat-spinner *ngIf="isEnrolling" diameter="20" class="m-r-5"></mat-spinner>
+                  Inscribir Estudiante en Materias Seleccionadas
+                </button>
+            </div>
+        </div>
+
+      </div> 
+    </mat-card-content>
+  </mat-card>
+</div>
