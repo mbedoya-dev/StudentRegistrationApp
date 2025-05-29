@@ -1,11 +1,14 @@
 @use "../variables" as *;
-body {
-  overflow-x: hidden;
-}
+
 [dir="rtl"] {
   // ------------------------------------------------------
   // header
   // ------------------------------------------------------
+  // highlight
+  td.hljs-ln-line.hljs-ln-numbers {
+    padding-left: 10px;
+    padding-right: 0;
+  }
 
   // customizer
   .customizerBtn {
@@ -41,7 +44,7 @@ body {
   // .sidebar-list.mdc-list .menu-list-item .mdc-list-item__start {
   //   margin-right: 0 !important;
   //   margin-left: 14px !important;
-  // }
+  // } 
 
   // minisidebar
   &.sidebarNav-mini {

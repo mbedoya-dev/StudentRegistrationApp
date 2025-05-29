@@ -3,11 +3,11 @@
 
 @mixin syntax-colors($args...) {
   @each $name, $color in meta.keywords($args) {
-   html .bg-#{$name} {
+    html .bg-#{$name} {
       background-color: $color !important;
     }
 
-   html .text-#{$name} {
+    html .text-#{$name} {
       color: $color !important;
     }
   }
@@ -25,7 +25,7 @@
   $light-secondary: var(--mat-sys-secondary-fixed-dim),
   $light-success: $light-success,
   $light-warning: $light-warning,
-  $light-primary: var(--mat-sys-primary-fixed-dim),
+  $light-primary: var(--mat-sys-primary-fixed-dim)
 );
 
 .fill-warning svg {

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router'; 
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -15,7 +14,7 @@ import { CreateStudent, Student } from '../../models/student.model';
 import { TablerIconsModule } from 'angular-tabler-icons';
 import { MatCardModule } from '@angular/material/card';
 
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService, ToastrModule } from 'ngx-toastr';
 
 @Component({
   selector: 'app-student-registration-form',
@@ -23,15 +22,16 @@ import { ToastrService } from 'ngx-toastr';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
+    MatFormFieldModule, 
     MatInputModule,
     MatButtonModule,
     MatProgressBarModule,
     MatCardModule,
     TablerIconsModule,
+    ToastrModule,
   ],
+  providers: [ToastrService],
   templateUrl: './student-registration.component.html',
-  styleUrls: ['./student-registration.component.scss']
 })
 export class StudentRegistrationComponent implements OnInit {
   studentRegistrationForm!: FormGroup;
@@ -42,8 +42,7 @@ export class StudentRegistrationComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private studentService: StudentService,
-    private toastr: ToastrService,
-    private router: Router 
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -90,4 +89,22 @@ export class StudentRegistrationComponent implements OnInit {
         }
       });
   }
+
+
+  showSuccess() {
+    this.toastr.success('You are awesome!', 'Success!');
+  }
+
+  showError() {
+    this.toastr.error('This is not good!', 'Oops!');
+  }
+
+  showWarning() {
+    this.toastr.warning('You are being warned.', 'Alert!');
+  }
+
+  showInfo() {
+    this.toastr.info('Just some information for you.');
+  }
+  
 }

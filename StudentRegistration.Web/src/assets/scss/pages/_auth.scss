@@ -65,19 +65,19 @@
     content: "";
     position: absolute;
     left: 0;
-    width: 100px;
+    width: 120px;
     top: 50%;
     height: 1px;
-    background: $borderColor;
+    background: var(--mat-sys-outline);
   }
   &:after {
     content: "";
     position: absolute;
     right: 0;
-    width: 100px;
+    width: 120px;
     top: 50%;
     height: 1px;
-    background: $borderColor;
+    background: var(--mat-sys-outline);
   }
 }
 

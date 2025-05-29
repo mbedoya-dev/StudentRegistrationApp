@@ -128,10 +128,6 @@ html .filter-sidebar {
   z-index: 9;
 }
 
-.mat-drawer[style*="visibility: hidden"] {
-  display: none;
-}
-
 pre {
   margin: 0;
   white-space: nowrap;
@@ -139,6 +135,10 @@ pre {
 
 td.hljs-ln-line.hljs-ln-numbers {
   padding-right: 10px;
+}
+
+.mat-drawer[style*="visibility: hidden"] {
+  display: none;
 }
 
 @media (min-width: 768px) {
