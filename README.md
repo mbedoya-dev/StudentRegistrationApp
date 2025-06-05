@@ -86,7 +86,7 @@ La solución consta de tres componentes principales:
 ## Tecnologías Utilizadas
 
 * **Backend:** .NET Core 8, Entity Framework Core 8, AutoMapper, Swagger (Swashbuckle)
-* **Frontend:** Angular (versión basada en el `package.json` parece ser Angular 19), Angular Material, TypeScript, RxJS, Ngx-Toastr, Angular Tabler Icons.
+* **Frontend:** Angular 19, Angular Material, TypeScript, RxJS, Ngx-Toastr, Angular Tabler Icons.
 * **Base de Datos:** SQL Server
 
 ## Configuración y Ejecución
